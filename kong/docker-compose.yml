@@ -20,3 +20,10 @@ services:
       - "127.0.0.1:7990:8001/tcp"
       - "8443:8443/tcp"
       - "127.0.0.1:8444:8444/tcp"
+    networks:
+      - shared-network
+networks:
+  shared-network:
+    external:
+      name: kong_default
+
