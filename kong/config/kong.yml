@@ -8,3 +8,26 @@ services:
   - name: hello-route
     paths:
     - /hello
+    
+plugins:
+- name: cors
+  config:
+    origins:
+      - https://google.com
+      - https://www.google.com
+    methods:
+    - GET
+    - POST 
+    headers:
+    - Accept
+    - Accept-Version
+    - Content-Length
+    - Content-MD%
+    - Content-Type
+    - Date 
+    - X-Auth-Token
+    exposed_headers:
+    - X-Auth-Token 
+    credentials: true
+    max_age: 3600
+    preflight_continue: false

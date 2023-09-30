@@ -5,6 +5,7 @@ services:
     image: kong
     volumes:
       - "./config:/usr/local/kong/declarative"
+      - "./path_to_certs_folder:/etc/kong/ssl"
     environment:
       - KONG_DATABASE=off
       - KONG_DECLARATIVE_CONFIG=/usr/local/kong/declarative/kong.yml
@@ -13,16 +14,20 @@ services:
       - KONG_PROXY_ERROR_LOG=/dev/stderr
       - KONG_ADMIN_ERROR_LOG=/dev/stderr
       - KONG_ADMIN_LISTEN=0.0.0.0:8001, 0.0.0.0:8444 ssl
+      # curl -k https://localhost:8443/hello
+      - KONG_PROXY_LISTEN=0.0.0.0:8000, 0.0.0.0:8443 ssl
       - KONG_LOG_LEVEL=debug
       - KONG_PLUGINS=bundled
+      - KONG_SSL_CERT=/etc/kong/ssl/server_cert.pem
+      - KONG_SSL_CERT_KEY=/etc/kong/ssl/server_key.pem
+
     ports:
       - "8000:8000/tcp"
-      - "127.0.0.1:7990:8001/tcp"
       - "8443:8443/tcp"
+      - "127.0.0.1:7990:8001/tcp"
       - "127.0.0.1:8444:8444/tcp"
     networks:
       - shared-network
 networks:
   shared-network:
     name: kong_default
-    
