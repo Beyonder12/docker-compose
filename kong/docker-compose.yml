@@ -24,6 +24,6 @@ services:
       - shared-network
 networks:
   shared-network:
-    external:
-      name: kong_default
+    name: kong_default
+
 
