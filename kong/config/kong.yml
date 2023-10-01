@@ -56,4 +56,10 @@ plugins:
     # - 172.25.0.1
     status: 401
     message: Cannot grant access
+
+- name: bot-detection 
+  config:
+    deny:
+    - "(C|c)hrome"
+    - "curl"
     
