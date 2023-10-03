@@ -5,5 +5,10 @@
 </head>
 <body>
     <h1>Hello, this is Nginx efe!</h1>
+    <p>Random number: <span id="randomNumber"></span></p>
+
+    <script>
+        document.getElementById('randomNumber').textContent = Math.floor(Math.random() * 100) + 1;
+    </script>
 </body>
 </html>

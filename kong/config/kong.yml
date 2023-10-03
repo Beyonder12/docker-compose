@@ -8,58 +8,115 @@ services:
   - name: hello-route
     paths:
     - /hello
+
+consumers:
+- username: user 
+
+# Basic Auth (username; password)
+basicauth_credentials:
+- consumer: user
+  username: Aladdin
+  password: OpenSesame
+
+# api key
+keyauth_credentials:
+- consumer: user
+  key: abc
+
+# Access control list which need above
+acls:
+- consumer: user 
+  group: group1
     
 plugins:
-- name: cors
-  config:
-    origins:
-      - https://google.com
-      - https://www.google.com
-    methods:
-    - GET
-    - POST 
-    headers:
-    - Accept
-    - Accept-Version
-    - Content-Length
-    - Content-MD%
-    - Content-Type
-    - Date 
-    - X-Auth-Token
-    exposed_headers:
-    - X-Auth-Token 
-    credentials: true
-    max_age: 3600
-    preflight_continue: false
+  - name: acl 
+    config:
+      allow: 
+        - group1
+        - group2
+      hide_groups_header: true
 
-- name: rate-limiting
-  config:
-    # second: 5
-    hour: 10
-    policy: local
-    fault_tolerant: true
-    hide_client_headers: false
-    redis_ssl: false
-    redis_ssl_verify: false
-# comment these if you don't want to store rate limiting data in redis
-    # policy: redis
-    # redis_host: 172.27.59.36
-    # redis_password: example
+  - name: basic-auth 
+    config: 
+      hide_credentials: true
+  
+  - name: key-auth 
+    config:
+      key_names:
+      - apikey
+      key_in_body: false
+      key_in_header: true
+      key_in_query: true
+      hide_credentials: false
+      run_on_preflight: true
 
-- name: ip-restriction 
-  config:
-    allow:
-    - 54.13.21.1
-    - 143.1.0.0/24
-    - 172.25.0.1
-    # deny:
-    # - 172.25.0.1
-    status: 401
-    message: Cannot grant access
+#   - name: basic
+# This plugin proxy cache for improve peformance
+# - name: proxy-cache
+#   config:
+#     response_code: 
+#     - 200
+#     request_method:
+#     - GET
+#     - HEAD 
+#     content_type:
+#     - text/plain 
+#     - application/json 
+#     - application/json; charset=utf-8
+#     - text/html; charset=UTF-8
+#     cache_ttl: 30
+#     strategy: memory
+# - name: cors
+#   config:
+#     origins:
+#       - https://google.com
+#       - https://www.google.com
+#     methods:
+#     - GET
+#     - POST 
+#     headers:
+#     - Accept
+#     - Accept-Version
+#     - Content-Length
+#     - Content-MD%
+#     - Content-Type
+#     - Date 
+#     - X-Auth-Token
+#     exposed_headers:
+#     - X-Auth-Token 
+#     credentials: true
+#     max_age: 3600
+#     preflight_continue: false
 
-- name: bot-detection 
-  config:
-    deny:
-    - "(C|c)hrome"
-    - "curl"
+# - name: rate-limiting
+#   config:
+#     # second: 5
+#     hour: 100
+#     policy: local
+#     fault_tolerant: true
+#     hide_client_headers: false
+#     redis_ssl: false
+#     redis_ssl_verify: false
+# # comment these if you don't want to store rate limiting data in redis
+#     # policy: redis
+#     # redis_host: 172.27.59.36
+#     # redis_password: example
+
+# - name: ip-restriction 
+#   config:
+#     allow:
+#     - 54.13.21.1
+#     - 143.1.0.0/24
+#     - 172.25.0.1
+#     # deny:
+#     # - 172.25.0.1
+#     status: 401
+#     message: Cannot grant access
+
+# # This plugin for deny access from url and chrome
+# - name: bot-detection 
+#   config:
+#     deny:
+#     # - "(C|c)hrome"
+#     # - "curl"
     

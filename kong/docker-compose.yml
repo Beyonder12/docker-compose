@@ -20,6 +20,7 @@ services:
       - KONG_PLUGINS=bundled
       - KONG_SSL_CERT=/etc/kong/ssl/server_cert.pem
       - KONG_SSL_CERT_KEY=/etc/kong/ssl/server_key.pem
+      - TZ=Asia/Jakarta
 
     ports:
       - "8000:8000/tcp"
