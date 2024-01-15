@@ -2,16 +2,18 @@ version: '3'
 
 services:
   postgres:
+    container_name: postgres-local
     image: postgres:latest
     ports:
-      - "5532:5432"
+      - "54320:5432"
     environment:
-      POSTGRES_USER: fajriillahi
+      POSTGRES_USER: beyonder12
       POSTGRES_PASSWORD: 12345678
       POSTGRES_DB: localdb
     volumes:
+    # this for store in our local
       - postgres-data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
 
 volumes:
   postgres-data:
-
