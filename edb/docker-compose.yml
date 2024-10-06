@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  edb:
+    image: edbpostgres/edb-postgres:latest
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_USER=myuser
+      - POSTGRES_DB=mydatabase
+    volumes:
+      - edb_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  edb_data:
+
